@@ -26,7 +26,8 @@ public class Browserstack {
 
     public static URL getBrowserstackUrl() {
         try {
-            return new URL(ProjectConfig.browserstackConfig.hubUrl());
+            return new URL(String.format(ProjectConfig.browserstackConfig.hubUrl(), ProjectConfig.browserstackConfig.username(),
+                    ProjectConfig.browserstackConfig.key()));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

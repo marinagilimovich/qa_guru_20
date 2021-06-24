@@ -7,15 +7,15 @@ import static org.aeonbits.owner.Config.LoadType.MERGE;
 @Config.LoadPolicy(MERGE)
 @Config.Sources({
         "system:properties",
-        "classpath:ios.properties"
+        "classpath:config/android.properties"
 })
 public interface AndroidConfig extends Config {
-    @Key("device")
+    @Key("browserstack.device")
     String device();
 
-    @Key("os_version")
+    @Key("browserstack.os")
     String osVersion();
 
-    @Key("app")
+    @Key("browserstack.app.url")
     String app();
 }
