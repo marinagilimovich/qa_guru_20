@@ -1,40 +1,35 @@
 package drivers;
 
 import com.codeborne.selenide.WebDriverProvider;
+import config.ProjectConfig;
+import helpers.Browserstack;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class BrowserStackMobileDriver implements WebDriverProvider {
-    public static URL getBrowserstackUrl() {
-        try {
-            return new URL("http://hub.browserstack.com/wd/hub");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
-    public WebDriver createDriver(DesiredCapabilities desiredCapabilities) {
-        // Set your access credentials
-        desiredCapabilities.setCapability("browserstack.user", "marinagilimovich_9PzHed");
-        desiredCapabilities.setCapability("browserstack.key", "XAWMeainDypUDFT3D3Xt");
+    public WebDriver createDriver(DesiredCapabilities capabilities) {
+        return getAndroidDriver();
+    }
 
-        // Set URL of the application under test
-        desiredCapabilities.setCapability("app", "bs://c700ce60cf13ae8ed97705a55b8e022f13c5827c");
+    private DesiredCapabilities commonCapabilities() {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("project", "qa_guru_20");
+        capabilities.setCapability("build", "Android");
+        capabilities.setCapability("name", "MobileTests");
+        capabilities.setCapability("autoGrantPermissions", "true");
 
-        // Specify device and os_version for testing
-        desiredCapabilities.setCapability("device", "Google Pixel 3");
-        desiredCapabilities.setCapability("os_version", "9.0");
+        return capabilities;
+    }
 
-        // Set other BrowserStack capabilities
-        desiredCapabilities.setCapability("project", "First Java Project");
-        desiredCapabilities.setCapability("build", "Java Android");
-        desiredCapabilities.setCapability("name", "first_test");
+    public AndroidDriver getAndroidDriver() {
+        DesiredCapabilities capabilities = commonCapabilities();
+        capabilities.setCapability("device", ProjectConfig.androidConfig.device());
+        capabilities.setCapability("os_version", ProjectConfig.androidConfig.osVersion());
+        capabilities.setCapability("app", ProjectConfig.androidConfig.app());
 
-        return new AndroidDriver(getBrowserstackUrl(), desiredCapabilities);
+        return new AndroidDriver(Browserstack.getBrowserstackUrl(), capabilities);
     }
 }

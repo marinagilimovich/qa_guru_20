@@ -15,7 +15,7 @@ import static java.nio.channels.Selector.open;
 public class BrowserStackTests extends TestBase {
     @Tag("selenide_android")
     @Test
-    @DisplayName("Simple search test")
+    @DisplayName("Search on Wikipedia test")
     void simpleWikiSearchTest() {
         step("Open app", () -> {
             open();
